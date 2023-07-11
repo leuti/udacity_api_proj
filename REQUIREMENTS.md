@@ -78,47 +78,47 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## Table Structure
 
-### Products
-
-Table: products (
-id:integer,
-name:varchar(255),
-price:numeric(10,2),
-category_id:integer [foreign key to category table]
-)
-
 ### Category
 
 Table: categories (
-id:integer,
-name:varchar(50)
+id: [Unique Key],
+name: varchar(50)
 )
 
 ### User
 
 Table: users (
-id:integer,
-login:varchar(100),
+id: [Unique Key],
+login: varchar(100),
 first_name: varchar(100),
 last_name: varchar(100),
 passwordHash: varchar
 )
 
+### Products
+
+Table: products (
+id: [Unique Key],
+name: varchar(255),
+price: numeric(10,2),
+category_id: integer [foreign key to category table]
+)
+
 ### Orders
 
 Table: orders (
-id:integer,
-productId: integer [foreign key to products table],
+id: [Unique Key],
+product_id: integer [foreign key to products table],
 quantity: integer,
-user_id: integer [foreign key to users table]
+user_id: integer [foreign key to users table],
 status: varchar(10)
 )
 
 ### Order Product
 
 Table: order_products (
-id:integer,
-order_id:integer [foreign key to orders table],
-product_id:integer [foreign key to products table],
-quantity:integer
+id: [Unique Key],
+order_id: integer [foreign key to orders table],
+product_id: integer [foreign key to products table],
+quantity: integer
 )
