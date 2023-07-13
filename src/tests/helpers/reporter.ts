@@ -1,22 +1,11 @@
-import {
-  DisplayProcessor,
-  SpecReporter,
-  StacktraceOption,
-} from 'jasmine-spec-reporter';
-import SuiteInfo = jasmine.SuiteInfo;
+const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 
-class CustomProcessor extends DisplayProcessor {
-  public displayJasmineStarted(info: SuiteInfo, log: string): string {
-    return `${log}`;
-  }
-}
-
-jasmine.getEnv().clearReporters();
+jasmine.getEnv().clearReporters(); // remove default reporter logs
 jasmine.getEnv().addReporter(
   new SpecReporter({
+    // add jasmine-spec-reporter
     spec: {
-      displayStacktrace: StacktraceOption.NONE,
+      displayPending: true,
     },
-    customProcessors: [CustomProcessor],
   })
 );

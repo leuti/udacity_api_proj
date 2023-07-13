@@ -1,3 +1,4 @@
+/*
 import express, { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -5,7 +6,7 @@ const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
   try {
     const authorisationHeader = req.headers.authorization;
     const token = authorisationHeader?.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET ?? '') as string; // ignore error
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET) as string; // ignore error
 
     next();
   } catch (err) {
@@ -23,3 +24,4 @@ app.use(verifyAuthToken);
 
 // Export the app instance instead of // export default verifyAuthToken;
 export default app;
+*/
