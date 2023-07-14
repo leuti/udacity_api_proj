@@ -31,7 +31,13 @@ export class CategoryStore {
 
       conn.release();
 
-      return result.rows[0];
+      console.log(`result: ${JSON.stringify(result.rows[0])}`);
+
+      if (result.rows[0] !== undefined) {
+        return result.rows[0];
+      } else {
+        throw new Error('Category ${id} not existing.');
+      }
     } catch (err) {
       throw new Error('Could not find category ${id}. Error: ${err}');
     }
@@ -63,11 +69,15 @@ export class CategoryStore {
       const result = await conn.query(sql, [id]);
 
       const category = result.rows[0];
-      console.log(`Deleted category: ${category}`);
-
       conn.release();
 
-      return category;
+      console.log(`Deleted category: ${category}`);
+
+      if (category !== undefined) {
+        return category;
+      } else {
+        throw new Error('Category ${id} not existing.');
+      }
     } catch (err) {
       throw new Error('Could not delete category ${id}. Error: ${err}');
     }

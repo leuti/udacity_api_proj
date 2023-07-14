@@ -26,6 +26,7 @@ const show = async (_req: Request, res: Response) => {
     const category = await store.show(_req.params.id);
     res.json(category);
   } catch (err: any) {
+    console.log(`Handlers categories show returned error ${err}`);
     res.status(400).json({ error: err.message }); // Return error message as JSON
   }
 };
@@ -46,8 +47,13 @@ const create = async (_req: Request, res: Response) => {
 
 const destroy = async (_req: Request, res: Response) => {
   console.log('Handlers categories destroy reached');
-  const deleted = await store.delete(_req.params.id);
-  res.json(deleted);
+  try {
+    const deleted = await store.delete(_req.params.id);
+    res.json(deleted);
+  } catch (err: any) {
+    console.log(`category destroy handler returned ${err}`);
+    res.status(400).json({ error: err.message }); // Return error message as JSON
+  }
 };
 
 /*
