@@ -5,6 +5,14 @@ import { Category, CategoryStore } from '../models/categories';
 
 const store = new CategoryStore();
 
+// For debugging: load debugLevel from ENV --> if TRUE console.log statements are generated
+import dotenv from 'dotenv';
+dotenv.config();
+const debugLevel: number = parseInt(process.env.DEBUG_LEVEL || '0');
+if (debugLevel > 0) {
+  console.log(`Debug Level: ${debugLevel}`);
+}
+
 const categoryRoutes = (app: express.Application) => {
   app.get('/categories', index);
   app.get('/categories/:id', show);
@@ -14,25 +22,33 @@ const categoryRoutes = (app: express.Application) => {
 };
 
 const index = async (_req: Request, res: Response) => {
-  console.log('Handlers categories index reached');
+  if (debugLevel > 0) {
+    console.log('Handlers categories index reached');
+  }
   const categories = await store.index();
   res.json(categories);
 };
 
 const show = async (_req: Request, res: Response) => {
-  console.log('Handlers categories show reached');
+  if (debugLevel > 0) {
+    console.log('Handlers categories show reached');
+  }
 
   try {
     const category = await store.show(_req.params.id);
     res.json(category);
   } catch (err: any) {
-    console.log(`Handlers categories show returned error ${err}`);
+    if (debugLevel > 0) {
+      console.log(`Handlers categories show returned error ${err}`);
+    }
     res.status(400).json({ error: err.message }); // Return error message as JSON
   }
 };
 
 const create = async (_req: Request, res: Response) => {
-  console.log('Handlers categories create reached');
+  if (debugLevel > 0) {
+    console.log('Handlers categories create reached');
+  }
   try {
     const category: Category = {
       name: _req.body.name,
@@ -46,12 +62,17 @@ const create = async (_req: Request, res: Response) => {
 };
 
 const destroy = async (_req: Request, res: Response) => {
-  console.log('Handlers categories destroy reached');
+  if (debugLevel > 0) {
+    console.log('Handlers categories destroy reached');
+  }
+
   try {
     const deleted = await store.delete(_req.params.id);
     res.json(deleted);
   } catch (err: any) {
-    console.log(`category destroy handler returned ${err}`);
+    if (debugLevel > 0) {
+      console.log(`category destroy handler returned ${err}`);
+    }
     res.status(400).json({ error: err.message }); // Return error message as JSON
   }
 };

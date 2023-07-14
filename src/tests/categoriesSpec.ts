@@ -5,7 +5,10 @@ const request = supertest(app);
 // For debugging: load debugLevel from ENV --> if TRUE console.log statements are generated
 import dotenv from 'dotenv';
 dotenv.config();
-const debugLevel: number = parseInt(process.env.DEBUG_FLAG || '0');
+const debugLevel: number = parseInt(process.env.DEBUG_LEVEL || '0');
+if (debugLevel > 0) {
+  console.log(`Debug Level: ${debugLevel}`);
+}
 
 /*
 Routes in handler: 

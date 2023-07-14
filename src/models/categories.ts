@@ -1,5 +1,13 @@
 import Client from '../database';
 
+// For debugging: load debugLevel from ENV --> if TRUE console.log statements are generated
+import dotenv from 'dotenv';
+dotenv.config();
+const debugLevel: number = parseInt(process.env.DEBUG_LEVEL || '0');
+if (debugLevel > 0) {
+  console.log(`Debug Level: ${debugLevel}`);
+}
+
 export type Category = {
   id?: Number;
   name: String;
@@ -23,7 +31,10 @@ export class CategoryStore {
 
   async show(id: string): Promise<Category> {
     try {
-      console.log(`Category ID: ${id}`);
+      if (debugLevel > 0) {
+        console.log(`Category ID: ${id}`);
+      }
+
       const conn = await Client.connect();
       const sql = 'SELECT * FROM categories WHERE id =($1)';
 
@@ -31,8 +42,9 @@ export class CategoryStore {
 
       conn.release();
 
-      console.log(`result: ${JSON.stringify(result.rows[0])}`);
-
+      if (debugLevel > 0) {
+        console.log(`result: ${JSON.stringify(result.rows[0])}`);
+      }
       if (result.rows[0] !== undefined) {
         return result.rows[0];
       } else {
@@ -62,7 +74,9 @@ export class CategoryStore {
 
   async delete(id: string): Promise<Category> {
     try {
-      console.log(`ID to be deleted: ${id}`);
+      if (debugLevel > 0) {
+        console.log(`ID to be deleted: ${id}`);
+      }
       const conn = await Client.connect();
       const sql = 'DELETE FROM categories WHERE id=($1) RETURNING *';
 
@@ -71,8 +85,9 @@ export class CategoryStore {
       const category = result.rows[0];
       conn.release();
 
-      console.log(`Deleted category: ${category}`);
-
+      if (debugLevel > 0) {
+        console.log(`Deleted category: ${category}`);
+      }
       if (category !== undefined) {
         return category;
       } else {
