@@ -36,9 +36,6 @@ const create = async (req: Request, res: Response) => {
   };
 
   try {
-    console.log('1 Username: ' + user.login);
-    console.log('1 Password: ' + user.passwordHash);
-
     const newUser = await store.create(user);
     var token = jwt.sign({ user: newUser }, process.env.TOKEN_SECRET as string);
     res.json(token);
@@ -49,10 +46,6 @@ const create = async (req: Request, res: Response) => {
 
 // Delete given user
 const destroy = async (_req: Request, res: Response) => {
-  if (utils.debugLevel > 0) {
-    console.log(`Handler destroy reached.`);
-  }
-
   const authorisationHeader = _req.headers.authorization;
   const token = authorisationHeader?.split(' ')[1];
 
@@ -64,6 +57,7 @@ const destroy = async (_req: Request, res: Response) => {
   }
 };
 
+// Authenticate user
 const authenticate = async (_req: Request, res: Response) => {
   const user: User = {
     login: _req.body.login,
@@ -72,6 +66,7 @@ const authenticate = async (_req: Request, res: Response) => {
     passwordHash: _req.body.password,
   };
   try {
+    console.log('Authentication Handler reached');
     const u = await store.authenticate(user.login, user.passwordHash);
     res.json(u);
   } catch (err: any) {

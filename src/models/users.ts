@@ -123,27 +123,21 @@ export class UserStore {
     }
   }
 
-  async authenticate(
-    login: string,
-    passwordHash: string
-  ): Promise<User | null> {
+  // Authenticate user --> Return password_hash if authorized; else null
+  async authenticate(login: string, password: string): Promise<User | null> {
     const conn = await Client.connect();
-    const sql = 'SELECT passwordHash FROM users WHERE login=($1)';
+    const sql = 'SELECT password_hash FROM users WHERE login=($1)';
 
     const result = await conn.query(sql, [login]);
 
-    if (utils.debugLevel > 0) {
-      console.log(passwordHash + pepper);
-    }
+    console.log(password + pepper);
 
     if (result.rows.length) {
       const user = result.rows[0];
 
-      if (utils.debugLevel > 0) {
-        console.log(user);
-      }
+      console.log(user);
 
-      if (bcrypt.compareSync(passwordHash + pepper, user.passwordHash)) {
+      if (bcrypt.compareSync(password + pepper, user.password_digest)) {
         return user;
       }
     }
