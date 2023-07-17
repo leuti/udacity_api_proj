@@ -86,29 +86,44 @@ export class UserStore {
   async delete(id: string, token: string): Promise<User> {
     try {
       if (utils.debugLevel > 0) {
-        console.log(`Deleting user with ID ${id} and token ${token}`);
+        console.log(`Model: Deleting user with ID ${id} and token ${token}`);
       }
 
       const conn = await Client.connect();
 
+      // First select the password_hash for give user
       const sql1 = 'SELECT password_hash FROM users WHERE id=($1)'; // instead of comparing the password_hash_digest I would just compare the user ID in the token.
       const result_select = await conn.query(sql1, [id]);
 
-      const passwordHashStored = result_select.rows[0].password_hash;
+      // Throw error if user with given id is not found
+      if (
+        result_select.rows[0] === undefined ||
+        result_select.rows[0] === null
+      ) {
+        throw new Error('User not found');
+      }
+
+      if (utils.debugLevel > 0) {
+        console.log(`SQL1 result: ${JSON.stringify(result_select.rows[0])}`);
+      }
+
+      const passwordHashStored = result_select.rows[0].password_hash; // store password_hash from the db
 
       if (utils.debugLevel > 0) {
         console.log(`passwordHash: ${passwordHashStored}`);
       }
 
+      // decode the token provided by the client
       const decoded: JwtPayload = jwt.verify(
         token,
         process.env.TOKEN_SECRET as Secret
       ) as JwtPayload;
 
       if (utils.debugLevel > 0) {
-        console.log(`decoded: ${JSON.stringify(decoded.user.password_hash)}`);
+        console.log(`decoded: ${JSON.stringify(decoded.user.id)}`);
       }
 
+      // compare the password_hash from the DB with the hash provided by the client --> only if both match the user can be deleted
       if (passwordHashStored === decoded.user.password_hash) {
         if (utils.debugLevel > 0) {
           console.log('You are allowed to delete user');
