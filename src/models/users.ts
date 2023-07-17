@@ -2,14 +2,9 @@ import Client from '../database';
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
-import utils from '../services/utils';
 
 const pepper: string = process.env.BCRYPT_PASSWORD || '';
 const saltRounds: number = parseInt(process.env.SALT_ROUNDS || '0');
-
-if (utils.debugLevel > 0) {
-  console.log(`Debug Level: ${utils.debugLevel}`);
-}
 
 export type User = {
   id?: string;
@@ -62,9 +57,6 @@ export class UserStore {
         'INSERT INTO users (login, first_name, last_name, password_hash) VALUES ($1, $2, $3, $4) RETURNING *';
 
       const hash = bcrypt.hashSync(u.passwordHash + pepper, saltRounds);
-      if (utils.debugLevel > 0) {
-        console.log(`User model reached with user ${u.login} and ${hash}`);
-      }
 
       const result = await conn.query(sql, [
         u.login,
@@ -130,12 +122,8 @@ export class UserStore {
 
     const result = await conn.query(sql, [login]);
 
-    console.log(password + pepper);
-
     if (result.rows.length) {
       const user = result.rows[0];
-
-      console.log(user);
 
       if (bcrypt.compareSync(password + pepper, user.password_digest)) {
         return user;

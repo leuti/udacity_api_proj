@@ -2,22 +2,14 @@ import supertest from 'supertest';
 import app from '../server';
 const request = supertest(app);
 
-// For debugging: load debugLevel from ENV --> if TRUE console.log statements are generated
-import dotenv from 'dotenv';
-dotenv.config();
-const debugLevel: number = parseInt(process.env.DEBUG_LEVEL || '0');
-if (debugLevel > 0) {
-  console.log(`Debug Level: ${debugLevel}`);
-}
-
-/*
+/* ===============================================================================
 Routes in handler: 
   app.get('/categories', index);
   app.get('/categories/:id', show);
   app.post('/categories', create); // verifyAuthToken
   app.delete('/categories/:id', destroy); // verifyAuthToken
   // app.post('/categories/:id/products', addProduct); // verifyAuthToken
-*/
+================================================================================== */
 
 /*
 Token für Test User:
@@ -65,9 +57,6 @@ describe('POST+DELETE /categories[/:id]', () => {
     const response = await request.post('/categories').send(categoryData); // Make API call
 
     categoryId = response.body.id; // generated catetory id
-    if (debugLevel > 0) {
-      console.log(`category POST returned categoryId ${categoryId}`);
-    }
 
     // Tests
     expect(response.status).toBe(200);

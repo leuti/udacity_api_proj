@@ -2,13 +2,13 @@ import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { User, UserStore } from '../models/users';
-import utils from '../services/utils';
+import verifyAuthToken from '../services/utils';
 
 const userRoutes = (app: express.Application) => {
   app.get('/users', index);
   app.get('/users/:id', show);
   app.post('/users', create);
-  app.delete('/users/:id', utils.verifyAuthToken, destroy);
+  app.delete('/users/:id', verifyAuthToken, destroy);
   app.post('/users/authenticate', authenticate);
 };
 
@@ -66,7 +66,6 @@ const authenticate = async (_req: Request, res: Response) => {
     passwordHash: _req.body.password,
   };
   try {
-    console.log('Authentication Handler reached');
     const u = await store.authenticate(user.login, user.passwordHash);
     res.json(u);
   } catch (err: any) {
