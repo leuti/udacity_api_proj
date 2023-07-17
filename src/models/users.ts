@@ -34,7 +34,7 @@ export class UserStore {
 
       return result.rows;
     } catch (err) {
-      throw new Error(`Unable to get users: ${err}`);
+      throw err;
     }
   }
 
@@ -50,7 +50,7 @@ export class UserStore {
 
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Unable to show user ${id}: ${err}`);
+      throw err;
     }
   }
 
@@ -78,17 +78,13 @@ export class UserStore {
 
       return user;
     } catch (err) {
-      throw new Error(`Unable to create user (${u.login}): ${err}`);
+      throw err;
     }
   }
 
   // Delete given user
   async delete(id: string, token: string): Promise<User> {
     try {
-      if (utils.debugLevel > 0) {
-        console.log(`Model: Deleting user with ID ${id} and token ${token}`);
-      }
-
       const conn = await Client.connect();
 
       // First select the password_hash for give user
@@ -96,22 +92,11 @@ export class UserStore {
       const result_select = await conn.query(sql1, [id]);
 
       // Throw error if user with given id is not found
-      if (
-        result_select.rows[0] === undefined ||
-        result_select.rows[0] === null
-      ) {
-        throw new Error('User not found');
-      }
-
-      if (utils.debugLevel > 0) {
-        console.log(`SQL1 result: ${JSON.stringify(result_select.rows[0])}`);
+      if (!result_select.rows || result_select.rows.length === 0) {
+        throw new Error(`User with id ${id} not found`);
       }
 
       const passwordHashStored = result_select.rows[0].password_hash; // store password_hash from the db
-
-      if (utils.debugLevel > 0) {
-        console.log(`passwordHash: ${passwordHashStored}`);
-      }
 
       // decode the token provided by the client
       const decoded: JwtPayload = jwt.verify(
@@ -119,17 +104,9 @@ export class UserStore {
         process.env.TOKEN_SECRET as Secret
       ) as JwtPayload;
 
-      if (utils.debugLevel > 0) {
-        console.log(`decoded: ${JSON.stringify(decoded.user.id)}`);
-      }
-
       // compare the password_hash from the DB with the hash provided by the client --> only if both match the user can be deleted
       if (passwordHashStored === decoded.user.password_hash) {
-        if (utils.debugLevel > 0) {
-          console.log('You are allowed to delete user');
-        }
         const sql = 'DELETE FROM users WHERE id=($1) RETURNING *';
-
         const result = await conn.query(sql, [id]);
 
         const user = result.rows[0];
@@ -137,15 +114,12 @@ export class UserStore {
         conn.release();
         return user;
       } else {
-        if (utils.debugLevel > 0) {
-          console.log('not allowed to delete');
-        }
         throw new Error(
           `Delete user NOT allowed. You can only delete your user.`
         );
       }
     } catch (err) {
-      throw new Error(`${err}`);
+      throw err;
     }
   }
 
