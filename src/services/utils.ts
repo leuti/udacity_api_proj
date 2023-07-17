@@ -1,6 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
 import jwt, { Secret } from 'jsonwebtoken';
 
+// For debugging: load debugLevel from ENV --> if TRUE console.log statements are generated
+import dotenv from 'dotenv';
+dotenv.config();
+
 // Middleware to ensura that the requestor is authorized to use this route.
 // The provided token will be validated before allowing access to the protected resource
 const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
@@ -27,4 +31,6 @@ const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default verifyAuthToken;
+const debugLevel: number = parseInt(process.env.DEBUG_LEVEL || '0');
+
+export default { verifyAuthToken, debugLevel };

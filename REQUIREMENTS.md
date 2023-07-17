@@ -92,7 +92,7 @@ id: [Unique Key],
 login: varchar(100),
 first_name: varchar(100),
 last_name: varchar(100),
-passwordHash: varchar
+password_hash: varchar
 )
 
 ### Products
