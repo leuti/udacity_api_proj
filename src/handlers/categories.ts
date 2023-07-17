@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 
 import { Category, CategoryStore } from '../models/categories';
-//import verifyAuthToken from '../services/utils';
+import verifyAuthToken from '../services/utils';
 
 const store = new CategoryStore();
 
@@ -16,8 +16,8 @@ if (debugLevel > 0) {
 const categoryRoutes = (app: express.Application) => {
   app.get('/categories', index);
   app.get('/categories/:id', show);
-  app.post('/categories', create); // verifyAuthToken
-  app.delete('/categories/:id', destroy); // verifyAuthToken
+  app.post('/categories', verifyAuthToken, create);
+  app.delete('/categories/:id', verifyAuthToken, destroy);
   // app.post('/categories/:id/products', addProduct); // verifyAuthToken
 };
 
