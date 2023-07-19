@@ -1,5 +1,14 @@
 import Client from '../database';
 
+/* ===============================================================================
+Routes in handler: 
+  app.get('/categories', index);
+  app.get('/categories/:id', show);
+  app.post('/categories', create); // verifyAuthToken
+  app.delete('/categories/:id', destroy); // verifyAuthToken
+  // app.post('/categories/:id/products', addProduct); // verifyAuthToken
+================================================================================== */
+
 export type Category = {
   id?: Number;
   name: String;
