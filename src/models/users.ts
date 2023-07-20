@@ -43,9 +43,13 @@ export class UserStore {
 
       conn.release();
 
-      return result.rows[0];
+      if (result.rows[0] !== undefined) {
+        return result.rows[0];
+      } else {
+        throw new Error('User ${id} not existing.');
+      }
     } catch (err) {
-      throw err;
+      throw new Error('Could not find User ${id}. Error: ${err}');
     }
   }
 
@@ -64,6 +68,7 @@ export class UserStore {
         u.lastName,
         hash,
       ]);
+
       const user = result.rows[0];
 
       conn.release();

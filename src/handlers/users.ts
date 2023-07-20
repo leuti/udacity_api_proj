@@ -22,8 +22,12 @@ const index = async (_req: Request, res: Response) => {
 
 // List details for specific user
 const show = async (_req: Request, res: Response) => {
-  const user = await store.show(_req.params.id);
-  res.json(user);
+  try {
+    const user = await store.show(_req.params.id);
+    res.json(user);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message }); // Return error message as JSON
+  }
 };
 
 // Create new user
@@ -38,7 +42,7 @@ const create = async (req: Request, res: Response) => {
   try {
     const newUser = await store.create(user);
     var token = jwt.sign({ user: newUser }, process.env.TOKEN_SECRET as string);
-    res.json(token);
+    res.json({ id: newUser.id, token: token });
   } catch (err: any) {
     res.status(400).json({ error: err.message }); // Return error message as JSON
   }
