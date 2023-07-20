@@ -17,7 +17,7 @@ Routes in handler:
   // app.post('/categories/:id/products', addProduct); // verifyAuthToken
 ================================================================================== */
 
-describe('Testing catgories API', () => {
+describe('Testing categories API', () => {
   it('GET /categories --> gets the categories index endpoint', async () => {
     const response = await request.get('/categories'); // Make API call
 
