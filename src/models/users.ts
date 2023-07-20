@@ -49,7 +49,7 @@ export class UserStore {
         throw new Error('User ${id} not existing.');
       }
     } catch (err) {
-      throw new Error('Could not find User ${id}. Error: ${err}');
+      throw new Error(`Could not find User ${id}. Error: ${err}`);
     }
   }
 

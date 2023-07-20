@@ -77,7 +77,7 @@ describe('Testing user API', () => {
     expect(response.body.hasOwnProperty('id')).toBe(true);
   });
 
-  it('DELETE /users[/:id]  (not existing) --> should return a 400 status', async () => {
+  it('DELETE /users[/:id] (not existing) --> should return a 400 status', async () => {
     userId = '99999'; // To be a non-existent userId ID
     const response = await request
       .delete(`/users/${userId}`) // Make API call
@@ -86,7 +86,7 @@ describe('Testing user API', () => {
     expect(response.status).toBe(400);
   });
 
-  it('DELETE /users[/:id]  (not me) --> should return a 400 status', async () => {
+  it('DELETE /users[/:id] (not me) --> should return a 400 status', async () => {
     userId = '2'; // To be a non-existent userId ID
     const response = await request
       .delete(`/users/${userId}`) // Make API call

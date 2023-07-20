@@ -25,7 +25,7 @@ describe('Testing catgories API', () => {
     expect(response.status).toBe(200);
   });
 
-  it('GET /categories/:id --> should return the category with the given id', async () => {
+  it('GET /categories/:id (existing) --> should return the category with the given id', async () => {
     const categoryId = '1'; // To be an existing category
     const response = await request.get(`/categories/${categoryId}`); // Make API call
 
@@ -35,7 +35,7 @@ describe('Testing catgories API', () => {
     expect(response.body.name).toBe('Gardening');
   });
 
-  it('should return a 400 status if the category does not exist', async () => {
+  it('GET /categories/:id (not existing) --> should return a 400 status if the category does not exist', async () => {
     const nonExistentId = '99999'; // To be a non-existent category ID
     const response = await request.get(`/categories/${nonExistentId}`); // Make the POST request
 
@@ -72,7 +72,7 @@ describe('Testing catgories API', () => {
     expect(response.body.hasOwnProperty('id')).toBe(true);
   });
 
-  it('DELETE /categories[/:id] --> should return a 400 status if the category does not exist', async () => {
+  it('DELETE /categories[/:id] (not existing) --> should return a 400 status if the category does not exist', async () => {
     const nonExistentId = '99999'; // To be a non-existent category ID
     const response = await request
       .delete(`/categories/${nonExistentId}`) // Make API call

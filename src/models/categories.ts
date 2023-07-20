@@ -26,7 +26,7 @@ export class CategoryStore {
 
       return result.rows;
     } catch (err) {
-      throw new Error('Could not get categories. Error: ${err}');
+      throw new Error(`Could not get categories. Error: ${err}`);
     }
   }
 
@@ -42,10 +42,10 @@ export class CategoryStore {
       if (result.rows[0] !== undefined) {
         return result.rows[0];
       } else {
-        throw new Error('Category ${id} not existing.');
+        throw new Error(`Category ${id} not existing.`);
       }
     } catch (err) {
-      throw new Error('Could not find category ${id}. Error: ${err}');
+      throw new Error(`Could not find category ${id}. Error: ${err}`);
     }
   }
 
@@ -62,7 +62,7 @@ export class CategoryStore {
 
       return category;
     } catch (err) {
-      throw new Error('Could not add new category ${title}. Error: ${err}');
+      throw new Error(`Could not add new category ${c.name}. Error: ${err}`);
     }
   }
 
@@ -79,10 +79,10 @@ export class CategoryStore {
       if (category !== undefined) {
         return category;
       } else {
-        throw new Error('Category ${id} not existing.');
+        throw new Error(`Category ${id} not existing.`);
       }
     } catch (err) {
-      throw new Error('Could not delete category ${id}. Error: ${err}');
+      throw new Error(`Could not delete category ${id}. Error: ${err}`);
     }
   }
 }
