@@ -94,4 +94,12 @@ describe('Testing user API', () => {
     // Tests
     expect(response.status).toBe(400);
   });
+
+  it('PENDING: Test AUTHENTICATE user --> Auth OK', function () {
+    expect(true).toBe(false);
+  });
+
+  it('PENDING: Test AUTHENTICATE user --> Auth NOK', function () {
+    expect(true).toBe(false);
+  });
 });
