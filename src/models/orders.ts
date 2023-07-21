@@ -12,7 +12,6 @@ Routes in handler:
 export type Order = {
   id?: number;
   productId: number;
-  quantity: number;
   userId: number;
   status: string;
 };
@@ -56,14 +55,9 @@ export class OrderStore {
     try {
       const conn = await Client.connect();
       const sql =
-        'INSERT INTO orders (product_id, quantity, user_id, status) VALUES($1, $2, $3, $4) RETURNING *';
+        'INSERT INTO orders (product_id, user_id, status) VALUES($1, $2, $3) RETURNING *';
 
-      const result = await conn.query(sql, [
-        o.productId,
-        o.quantity,
-        o.userId,
-        o.status,
-      ]);
+      const result = await conn.query(sql, [o.productId, o.userId, o.status]);
 
       const order = result.rows[0];
 
@@ -72,6 +66,27 @@ export class OrderStore {
       return order;
     } catch (err) {
       throw new Error(`Could not add new order ${o.id}. Error: ${err}`);
+    }
+  }
+
+  async addProduct(
+    quantity: number,
+    orderId: string,
+    productId: string
+  ): Promise<Order> {
+    try {
+      const conn = await Client.connect();
+      const sql =
+        'INSERT INTO order_products (quantity, order_id, product_id) VALUES ($1, $2, $3) RETURNING *';
+
+      const result = await conn.query(sql, [quantity, orderId, productId]);
+
+      const order = result.rows[0];
+      conn.release();
+
+      return order;
+    } catch (err) {
+      throw new Error(`Could not add product ${productId} to order ${orderId}`);
     }
   }
 
