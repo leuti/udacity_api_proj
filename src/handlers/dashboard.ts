@@ -10,13 +10,11 @@ const dashboardRoutes = (app: express.Application) => {
 const dashboard = new DashboardQueries();
 
 const productsInOrders = async (_req: Request, res: Response) => {
-  console.log('Hallo productsInOrders');
   const products = await dashboard.productsInOrders();
   res.json(products);
 };
 
 const mostExpensiveProducts = async (_req: Request, res: Response) => {
-  console.log('Hallo mostExpensiveProducts');
   const products = await dashboard.mostExpensiveProducts();
   res.json(products);
 };

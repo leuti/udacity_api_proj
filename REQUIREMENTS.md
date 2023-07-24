@@ -44,6 +44,11 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Create [token required] (args: orderId, productId, quantity) --> Route: orders/:id/products [Post]
 - Delete [token required] --> Route: orders/:id/products/:id [Delete] // only delete specific order products items
 
+### Dashboard
+
+- Get (most popular ordered products) --> Route: most_popular_products [Get]
+- Get (most expensive products) --> Route: most_expensive_products [Get]
+
 ## Data Shapes
 
 ### Products
@@ -69,7 +74,6 @@ These are the notes from a meeting with the frontend developer that describe wha
 ### Orders
 
 - id
-- product ids of all ordered products
 - user id
 - status of order (active or complete)
 
@@ -105,7 +109,6 @@ category_id: integer [foreign key to category table]
 
 Table: orders (
 id: [Unique Key],
-product_id: integer [foreign key to products table],
 user_id: integer [foreign key to users table],
 status: varchar(10)
 )

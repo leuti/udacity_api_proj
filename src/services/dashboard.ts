@@ -6,10 +6,9 @@ export class DashboardQueries {
     { name: string; price: number; order_id: string }[]
   > {
     try {
-      console.log(`dashboard service productsInOrders reached`);
       const conn = await Client.connect();
       const sql =
-        'SELECT name, price, order_id FROM products INNER JOIN order_products ON products.id = order_products.id';
+        'SELECT name, price, order_id FROM products INNER JOIN order_products ON products.id = order_products.id LIMIT 5';
 
       const result = await conn.query(sql);
 
@@ -24,7 +23,6 @@ export class DashboardQueries {
   // Get 5 most expensive products
   async mostExpensiveProducts(): Promise<{ name: string; price: number }[]> {
     try {
-      console.log(`dashboard service mostExpensiveProducts reached`);
       const conn = await Client.connect();
       const sql =
         'SELECT name, price FROM products ORDER BY price DESC LIMIT 5';

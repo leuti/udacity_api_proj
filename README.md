@@ -4,8 +4,6 @@
 
 This repo contains a basic Node and Express app to get you started in constructing an API.
 
-Run the command "npm install" to install all required packages.
-
 ## Required Technologies
 
 This application makes use of the following libraries:
@@ -34,7 +32,7 @@ BCRYPT_PASSWORD=29(/%&!Hkyiz1&
 SALT_ROUNDS=10
 TOKEN_SECRET=KasparIstGross
 
-### Create the following database.json file
+### Create the following database.json file in the root folder of this project
 
 {
 "dev": {
@@ -53,6 +51,10 @@ TOKEN_SECRET=KasparIstGross
 }
 }
 
+### Install all packages
+
+Run the command "npm install" to install all required packages.
+
 ### Launch the docker file containing the psql database
 
 Run the following command "docker compose up -d"
@@ -70,3 +72,4 @@ npm run test
 
 npm run build
 npm run start
+(alternative: npm run watch)
