@@ -2,7 +2,9 @@
 
 ## Getting Started
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+This repo contains a basic Node and Express app to get you started in constructing an API.
+
+Run the command "npm install" to install all required packages
 
 ## Required Technologies
 
@@ -18,7 +20,11 @@ This application makes use of the following libraries:
 
 ## Steps to Completion
 
-### Create the following .env file
+### Source location
+
+https://github.com/leuti/udacity_api_proj.git
+
+### Create the following .env file in the root folder of this project
 
 POSTGRES_HOST=127.0.0.1
 POSTGRES_DB=shopping
@@ -27,6 +33,25 @@ POSTGRES_PASSWORD=password123
 BCRYPT_PASSWORD=29(/%&!Hkyiz1&
 SALT_ROUNDS=10
 TOKEN_SECRET=KasparIstGross
+
+### Create the following database.json file
+
+{
+"dev": {
+"driver": "pg",
+"host": "127.0.0.1",
+"database": "shopping",
+"user": "shopping_user",
+"password": "password123"
+},
+"test": {
+"driver": "pg",
+"host": "127.0.0.1",
+"database": "shopping",
+"user": "shopping_user",
+"password": "password123"
+}
+}
 
 ### Launch the docker file containing the psql database
 
