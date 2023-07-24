@@ -1,1 +1,4 @@
-/* Replace with your SQL commands */
+DELETE FROM categories;
+DELETE FROM users;
+DELETE FROM products;
+DELETE FROM orders;
