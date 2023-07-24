@@ -27,7 +27,7 @@ describe('Testing orders API', () => {
   });
 
   it('GET /orders/:id (existing) --> should return the order with the given id', async () => {
-    const orderId = '2'; // To be an existing order
+    const orderId = '1'; // To be an existing order
     const response = await request.get(`/orders/${orderId}`); // Make API call
 
     // Tests
@@ -47,7 +47,7 @@ describe('Testing orders API', () => {
   it('POST /orders[/:id] --> should create a new order', async () => {
     // Create test data
     const orderData = {
-      productId: 2,
+      productId: 1,
       userId: 1,
       status: 'Ordered',
     };
@@ -87,8 +87,8 @@ describe('Testing orders API', () => {
   it('POST /orders/:id/products (existing) --> should add new order_products record', async () => {
     // Create test data
     const orderProductsData = {
-      orderId: '2',
-      productId: '2',
+      orderId: '1',
+      productId: '1',
       quantity: 2,
     };
 

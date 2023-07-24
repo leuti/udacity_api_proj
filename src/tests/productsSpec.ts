@@ -26,13 +26,13 @@ describe('Testing products API', () => {
   });
 
   it('GET /products/:id (existing) --> should return the product with the given id', async () => {
-    const productId = '2'; // To be an existing product
+    const productId = '1'; // To be an existing product
     const response = await request.get(`/products/${productId}`); // Make API call
 
     // Tests
     expect(response.status).toBe(200);
     expect(response.body).toBeDefined();
-    expect(response.body.name).toBe('Besenwagen');
+    expect(response.body.name).toBe('Test Product');
   });
 
   it('GET /products/:id (not existing) --> should return a 400 status if the product does not exist', async () => {
