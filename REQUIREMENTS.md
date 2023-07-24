@@ -28,21 +28,19 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Show [token required] --> Route: users/:id [Get]
 - Create [token required] (args: login, firstName, LastName, password) --> Route: users [Post]
 - Delete [token required] --> Route: users/:id [Delete]
+- Authenticate [token required] --> Route users/authenticate [post]
 
 ### Orders
 
 - Index [token required] --> Route: orders [Get]
 - Show [token required] --> Route: orders/:id [Get]
 - Create [token required] (args: userId, status) --> Route: orders [Post]
-- Update [token required] (args: orderId, status) --> Route: orders [Put]
 - Delete [token required] --> Route: orders/:id [Delete] // only own order can be deleted; order products entries are deleted at the same time
 - Current Order by user [token required] (args: user id)
 - Completed Orders by user [token required] (args: user id)
 
 ### Order Products
 
-- Index [token required] --> API not exposed
-- Show [token required] --> Route: order_products/:id [Get]
 - Create [token required] (args: orderId, productId, quantity) --> Route: orders/:id/products [Post]
 - Delete [token required] --> Route: orders/:id/products/:id [Delete] // only delete specific order products items
 
@@ -72,7 +70,6 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 - id
 - product ids of all ordered products
-- quantity for each ordered product
 - user id
 - status of order (active or complete)
 
@@ -109,7 +106,6 @@ category_id: integer [foreign key to category table]
 Table: orders (
 id: [Unique Key],
 product_id: integer [foreign key to products table],
-quantity: integer,
 user_id: integer [foreign key to users table],
 status: varchar(10)
 )
