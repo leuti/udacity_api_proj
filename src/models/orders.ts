@@ -11,7 +11,6 @@ Routes in handler:
 
 export type Order = {
   id?: number;
-  productId: number;
   userId: number;
   status: string;
 };
@@ -55,9 +54,9 @@ export class OrderStore {
     try {
       const conn = await Client.connect();
       const sql =
-        'INSERT INTO orders (product_id, user_id, status) VALUES($1, $2, $3) RETURNING *';
+        'INSERT INTO orders (user_id, status) VALUES($1, $2) RETURNING *';
 
-      const result = await conn.query(sql, [o.productId, o.userId, o.status]);
+      const result = await conn.query(sql, [o.userId, o.status]);
 
       const order = result.rows[0];
 

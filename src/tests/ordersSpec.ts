@@ -47,7 +47,6 @@ describe('Testing orders API', () => {
   it('POST /orders[/:id] --> should create a new order', async () => {
     // Create test data
     const orderData = {
-      productId: 1,
       userId: 1,
       status: 'Ordered',
     };

@@ -30,7 +30,6 @@ const show = async (_req: Request, res: Response) => {
 const create = async (_req: Request, res: Response) => {
   try {
     const order: Order = {
-      productId: _req.body.productId,
       userId: _req.body.userId,
       status: _req.body.status,
     };
