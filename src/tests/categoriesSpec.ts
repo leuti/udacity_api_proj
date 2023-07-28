@@ -6,6 +6,15 @@ var token: string;
 var userId: number;
 let categoryId: string; // variable to hold the newly created categoryId
 
+/* ===============================================================================
+Routes in handler: 
+  app.get('/categories', index);
+  app.get('/categories/:id', show);
+  app.post('/categories', create); // verifyAuthToken
+  app.delete('/categories/:id', destroy); // verifyAuthToken
+  // app.post('/categories/:id/products', addProduct); // verifyAuthToken
+================================================================================== */
+
 // With this function a new test user is created
 async function createUserAndSetToken() {
   const userData = {
@@ -33,15 +42,6 @@ beforeAll(async () => {
 afterAll(async () => {
   await deleteUser();
 });
-
-/* ===============================================================================
-Routes in handler: 
-  app.get('/categories', index);
-  app.get('/categories/:id', show);
-  app.post('/categories', create); // verifyAuthToken
-  app.delete('/categories/:id', destroy); // verifyAuthToken
-  // app.post('/categories/:id/products', addProduct); // verifyAuthToken
-================================================================================== */
 
 describe('Testing categories API', () => {
   it('GET /categories --> gets the categories index endpoint', async () => {

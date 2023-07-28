@@ -14,8 +14,6 @@ const {
 
 let Client: Pool;
 
-console.log(`ENV=[${ENV?.trim()}]`);
-
 if (ENV?.trim() == 'test') {
   console.log(
     `IM TEST MODUS - database.ts: ENV=[${ENV}] | database = ${POSTGRES_TEST_DB}`

@@ -3,9 +3,8 @@ import app from '../server';
 const request = supertest(app);
 
 // Token of Test User
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJsb2dpbiI6InRlc3RfdXNlciIsImZpcnN0X25hbWUiOiJUZXN0IiwibGFzdF9uYW1lIjoiVGVzdCIsInBhc3N3b3JkX2hhc2giOiIkMmIkMTAkM1Fna0QvRnhzR1BLckthLkNaMUs3ZXBlTWxUTHcwU2JwQmRnNDBna0w1djhmWWhJdXFCZWkifSwiaWF0IjoxNjg5NjE3NzM4fQ.RTxSEEswfTMxFo_xaiZzqct0To1lRokFu01Cmh4_N_E';
-
+var token: string;
+var userId: number;
 let orderId: string; // variable to hold the newly created orderId
 let orderProductsId: string; // variable to hold newly created orderProductsId
 
@@ -17,6 +16,36 @@ Routes in handler:
   app.delete('/orders/:id', destroy); // verifyAuthToken
   app.post('/orders/:id/products', addProduct); // verifyAuthToken
 ================================================================================== */
+
+// With this function a new test user is created
+async function createUserAndSetToken() {
+  const userData = {
+    login: 'test_user',
+    firstName: 'Test',
+    lastName: 'User',
+    password: 'jasmtestusr',
+  };
+
+  console.log('categoriesSpec: beforeAll');
+  const response = await request.post('/users').send(userData);
+  token = response.body.token;
+  userId = response.body.id;
+}
+
+async function deleteUser() {
+  const response = await request
+    .delete(`/users/${userId}`)
+    .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
+}
+
+beforeAll(async () => {
+  console.log('categoriesSpec: beforeAll');
+  await createUserAndSetToken();
+});
+
+afterAll(async () => {
+  await deleteUser();
+});
 
 describe('Testing orders API', () => {
   it('GET /orders --> gets the orders index endpoint', async () => {

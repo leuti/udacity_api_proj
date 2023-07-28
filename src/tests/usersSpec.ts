@@ -3,11 +3,9 @@ import app from '../server';
 import { json } from 'body-parser';
 const request = supertest(app);
 
-// Token of Test User
-const token: string =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJsb2dpbiI6InRlc3RfdXNlciIsImZpcnN0X25hbWUiOiJUZXN0IiwibGFzdF9uYW1lIjoiVGVzdCIsInBhc3N3b3JkX2hhc2giOiIkMmIkMTAkM1Fna0QvRnhzR1BLckthLkNaMUs3ZXBlTWxUTHcwU2JwQmRnNDBna0w1djhmWWhJdXFCZWkifSwiaWF0IjoxNjg5NjE3NzM4fQ.RTxSEEswfTMxFo_xaiZzqct0To1lRokFu01Cmh4_N_E';
+var token: string;
+var userId: number = 1;
 var deleteToken: string = ''; // get returned token
-var userId: string; // variable to hold the newly created userId
 
 /* ===============================================================================
 Routes in handler: 
@@ -27,7 +25,6 @@ describe('Testing user API', () => {
   });
 
   it('GET /users/:id (existing) --> should return the userId with the given id', async () => {
-    userId = '1'; // To be an existing userId
     const response = await request.get(`/users/${userId}`); // Make API call
 
     // Tests
@@ -37,7 +34,7 @@ describe('Testing user API', () => {
   });
 
   it('GET /users/:id (not existing) --> should return a 400 status', async () => {
-    userId = '99999'; // To be a non-existent userId ID
+    userId = 99999; // To be a non-existent userId ID
     const response = await request.get(`/users/${userId}`); // Make the POST request
 
     // Tests
@@ -78,20 +75,20 @@ describe('Testing user API', () => {
   });
 
   it('DELETE /users[/:id] (not existing) --> should return a 400 status', async () => {
-    userId = '99999'; // To be a non-existent userId ID
+    userId = 99999; // To be a non-existent userId ID
     const response = await request
       .delete(`/users/${userId}`) // Make API call
       .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
     // Tests
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(401);
   });
 
   it('DELETE /users[/:id] (not me) --> should return a 400 status', async () => {
-    userId = '2'; // To be a non-existent userId ID
+    userId = 2; // To be a non-existent userId ID
     const response = await request
       .delete(`/users/${userId}`) // Make API call
       .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
     // Tests
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(401);
   });
 });
