@@ -56,9 +56,9 @@ ENV=test
 }
 }
 
-### Ensure End of Line Sequence is correct
+### IMPORTANT: Ensure End of Line Sequence is correct
 
-On my Windows machine I have to ensure that the End of Line Sequence for file "docker-entrypoint-initdb.d\init-db.sh" is set to LF. I have done this using VSCode.
+On my Windows machine I have to ensure that the End of Line Sequence for file "docker-entrypoint-initdb.d\init-db.sh" is set to LF. I have done this using VSCode. Proposals for a better solution to create the two shopping database at the beginning are welcomed.
 
 ### Install all packages
 
