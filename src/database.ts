@@ -15,9 +15,6 @@ const {
 let Client: Pool;
 
 if (ENV?.trim() == 'test') {
-  console.log(
-    `IM TEST MODUS - database.ts: ENV=[${ENV}] | database = ${POSTGRES_TEST_DB}`
-  );
   Client = new Pool({
     host: POSTGRES_HOST,
     database: POSTGRES_TEST_DB,
@@ -25,9 +22,6 @@ if (ENV?.trim() == 'test') {
     password: POSTGRES_PASSWORD,
   });
 } else {
-  console.log(
-    `NICHT IM TEST MODUS: database.ts: ENV=${ENV} | database = ${POSTGRES_DEV_DB}`
-  );
   Client = new Pool({
     host: POSTGRES_HOST,
     database: POSTGRES_DEV_DB,
