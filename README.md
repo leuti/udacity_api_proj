@@ -56,6 +56,10 @@ ENV=test
 }
 }
 
+### Ensure End of Line Sequence is correct
+
+On my Windows machine I have to ensure that the End of Line Sequence for file "docker-entrypoint-initdb.d\init-db.sh" is set to LF. I have done this using VSCode.
+
 ### Install all packages
 
 - Run the command "npm install" to install all required packages.
@@ -90,3 +94,11 @@ ENV=test
 - npm run test:drop: same as above, but drops all tables previously created
 - npm run build: builds the runtime code
 - npm run jasmine: runs the jasmine test scripts
+
+## Some docker commands
+
+- "docker stop proj_pg-postgres-1" stops the container
+- "docker rm proj_pg-postgres-1" removes the container
+- "docker volume rm proj_pg_postgres" removes the docker volume
+- "docker ps" will list running containers
+- "docker volume ls" lists all volumes
