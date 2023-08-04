@@ -68,7 +68,7 @@ On my Windows machine I have to ensure that the End of Line Sequence for file "d
 
 - Run the following command "docker compose up -d"
 - The psql server will start on port 5432
-- Note: during the creation of my psql docker container I am creating two databases. This is done with the script init-db.sh located in the directory docker-entrypoint-initdb.d
+- Note: during the creation of my psql docker container I am creating two databases. This is done with the script init-db.sh located in the directory docker-entrypoint-initdb.d --> see section "IMPORTANT: Ensure End of Line Sequence is correct"
 
 ## Launch app in different modes
 

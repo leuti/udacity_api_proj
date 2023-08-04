@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "npx tsc && db-migrate --env dev up && node dist/server.js",
+    "start": "npx tsc && db-migrate up && node dist/server.js",
     "watch": "tsc-watch --esModuleInterop ./src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
     "test-ts": "jasmine-ts",
     "test": "npx tsc && db-migrate --env test up && set ENV=test && jasmine",
