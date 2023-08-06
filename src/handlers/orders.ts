@@ -14,8 +14,12 @@ const orderRoutes = (app: express.Application) => {
 };
 
 const index = async (_req: Request, res: Response) => {
-  const orders = await store.index();
-  res.json(orders);
+  try {
+    const orders = await store.index();
+    res.json(orders);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message }); // Return error message as JSON
+  }
 };
 
 const show = async (_req: Request, res: Response) => {

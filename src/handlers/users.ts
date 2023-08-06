@@ -16,8 +16,12 @@ const store = new UserStore();
 
 // List all users in database
 const index = async (_req: Request, res: Response) => {
-  const users = await store.index();
-  res.json(users);
+  try {
+    const users = await store.index();
+    res.json(users);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message }); // Return error message as JSON
+  }
 };
 
 // List details for specific user

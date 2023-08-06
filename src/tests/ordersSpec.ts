@@ -6,7 +6,6 @@ const request = supertest(app);
 var token: string;
 var userId: number;
 let orderId: string; // variable to hold the newly created orderId
-let orderProductsId: string; // variable to hold newly created orderProductsId
 
 /* ===============================================================================
 Routes in handler: 
@@ -19,27 +18,33 @@ Routes in handler:
 
 // With this function a new test user is created
 async function createUserAndSetToken() {
-  const userData = {
-    login: 'test_user',
-    firstName: 'Test',
-    lastName: 'User',
-    password: 'jasmtestusr',
-  };
+  try {
+    const userData = {
+      login: 'test_user',
+      firstName: 'Test',
+      lastName: 'User',
+      password: 'jasmtestusr',
+    };
 
-  console.log('categoriesSpec: beforeAll');
-  const response = await request.post('/users').send(userData);
-  token = response.body.token;
-  userId = response.body.id;
+    const response = await request.post('/users').send(userData);
+    token = response.body.token;
+    userId = response.body.id;
+  } catch (err: any) {
+    console.error('Error creating user:', err);
+  }
 }
 
 async function deleteUser() {
-  const response = await request
-    .delete(`/users/${userId}`)
-    .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
+  try {
+    const response = await request
+      .delete(`/users/${userId}`)
+      .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
+  } catch (err: any) {
+    console.error('Error deleting user:', err);
+  }
 }
 
 beforeAll(async () => {
-  console.log('categoriesSpec: beforeAll');
   await createUserAndSetToken();
 });
 

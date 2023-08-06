@@ -14,8 +14,12 @@ const productRoutes = (app: express.Application) => {
 };
 
 const index = async (_req: Request, res: Response) => {
-  const products = await store.index();
-  res.json(products);
+  try {
+    const products = await store.index();
+    res.json(products);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message }); // Return error message as JSON
+  }
 };
 
 const show = async (_req: Request, res: Response) => {
@@ -50,24 +54,5 @@ const destroy = async (_req: Request, res: Response) => {
     res.status(400).json({ error: err.message }); // Return error message as JSON
   }
 };
-
-/*
-const addProduct = async (_req: Request, res: Response) => {
-  const userId: string = _req.params.id;
-  const productId: string = _req.body.productId;
-  const quantity: number = parseInt(_req.body.quantity);
-
-  try {
-    const addedProduct = await store.addProduct(
-      quantity,
-      userId,
-      productId
-    );
-    res.json(addedProduct);
-  } catch (err: any) {
-    res.status(400).json({ error: err.message }); // Return error message as JSON
-  }
-};
-*/
 
 export default productRoutes;
