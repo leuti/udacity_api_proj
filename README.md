@@ -56,10 +56,6 @@ ENV=test
 }
 }
 
-### IMPORTANT: Ensure End of Line Sequence is correct
-
-On my Windows machine I have to ensure that the End of Line Sequence for file "docker-entrypoint-initdb.d\init-db.sh" is set to LF. I have done this using VSCode. Proposals for a better solution to create the two shopping database at the beginning are welcomed.
-
 ### Install all packages
 
 - Run the command "npm install" to install all required packages.
@@ -68,7 +64,6 @@ On my Windows machine I have to ensure that the End of Line Sequence for file "d
 
 - Run the following command "docker compose up -d"
 - The psql server will start on port 5432
-- Note: during the creation of my psql docker container I am creating two databases. This is done with the script init-db.sh located in the directory docker-entrypoint-initdb.d --> see section "IMPORTANT: Ensure End of Line Sequence is correct"
 
 ## Launch app in different modes
 
