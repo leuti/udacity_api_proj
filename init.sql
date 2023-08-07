@@ -1,4 +1,4 @@
 -- This file is called when the docker is initialised. 
 
-CREATE DATABASE test_database;
-CREATE DATABASE dev_database;
+CREATE DATABASE shopping_test;
+CREATE DATABASE shopping_dev;
