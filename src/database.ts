@@ -15,12 +15,16 @@ const {
 let Client: Pool;
 
 if (ENV?.trim() == 'test') {
+  // trim is used to ensure trailing spaces are removed
   Client = new Pool({
     host: POSTGRES_HOST,
     database: POSTGRES_TEST_DB,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
   });
+  console.log(
+    `Starting database: ENV=[${ENV}] | database = ${POSTGRES_TEST_DB}`
+  );
 } else {
   Client = new Pool({
     host: POSTGRES_HOST,
@@ -28,6 +32,9 @@ if (ENV?.trim() == 'test') {
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
   });
+  console.log(
+    `Starting database: ENV=[${ENV}] | database = ${POSTGRES_DEV_DB}`
+  );
 }
-console.log(`Starting database: ENV=[${ENV}] | database = ${POSTGRES_TEST_DB}`);
+
 export default Client;
