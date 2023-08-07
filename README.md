@@ -13,14 +13,18 @@ This application makes use of the following libraries:
 - dotenv from npm for managing environment variables
 - db-migrate from npm for migrations
 - jsonwebtoken from npm for working with JWTs
-- bcrypt to hash an
-  d compare passwords
+- bcrypt to hash and compare passwords
 - jasmine from npm for testing (incl. supertest for API testing)
 - cross-env to start app in different environments independent of the OS
 
-## Steps to installation
+## Steps to installation (details below)
 
-### 1. Download source and install locally
+1. git clone https://github.com/leuti/udacity_api_proj.git
+2. Create .env file
+3. npm install
+4. docker compose up -d
+
+### Download source and install locally
 
 git clone https://github.com/leuti/udacity_api_proj.git
 
@@ -36,25 +40,6 @@ BCRYPT_PASSWORD=29(/%&!Hkyiz1&
 SALT_ROUNDS=10
 TOKEN_SECRET=KasparIstGross_test
 ENV=test
-
-### Create the following database.json file in the root folder of this project (this information would normally not be exposed in a README file)
-
-{
-"dev": {
-"driver": "pg",
-"host": "127.0.0.1",
-"database": "shopping_dev",
-"user": "shopping_user",
-"password": "password123"
-},
-"test": {
-"driver": "pg",
-"host": "127.0.0.1",
-"database": "shopping_test",
-"user": "shopping_user",
-"password": "password123"
-}
-}
 
 ### Install all packages
 

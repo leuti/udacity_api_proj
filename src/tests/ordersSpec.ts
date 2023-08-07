@@ -6,6 +6,7 @@ const request = supertest(app);
 var token: string;
 var userId: number;
 let orderId: string; // variable to hold the newly created orderId
+let orderProductsId: string; // variable to hold the newly created orderId
 
 /* ===============================================================================
 Routes in handler: 
