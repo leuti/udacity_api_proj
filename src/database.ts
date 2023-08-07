@@ -29,5 +29,5 @@ if (ENV?.trim() == 'test') {
     password: POSTGRES_PASSWORD,
   });
 }
-
+console.log(`Starting database: ENV=[${ENV}] | database = ${POSTGRES_TEST_DB}`);
 export default Client;
