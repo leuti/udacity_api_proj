@@ -29,7 +29,6 @@ describe('Testing user API', () => {
 
     // Tests
     expect(response.status).toBe(200);
-    expect(response.body).toBeDefined();
     expect(response.body.login).toBe('test_user');
   });
 
@@ -60,7 +59,6 @@ describe('Testing user API', () => {
 
     // Tests
     expect(response.status).toBe(200);
-    expect(response.body).toBeDefined();
     expect(response.body.hasOwnProperty('id')).toBe(true);
   });
 

@@ -1,6 +1,9 @@
 import supertest from 'supertest';
 import app from '../server';
+import { Product, ProductStore } from '../models/products'; // as recommended by Udacity I am importing the model (in contract to the other test cases)
+
 const request = supertest(app);
+const store = new ProductStore();
 
 var token: string;
 var userId: number;
@@ -12,7 +15,7 @@ Routes in handler:
   app.get('/products/:id', show);
   app.post('/products', create); // verifyAuthToken
   app.delete('/products/:id', destroy); // verifyAuthToken
-  // app.post('/products/:id/products', addProduct); // verifyAuthToken
+  app.post('/products/:id/products', addProduct); // verifyAuthToken
 ================================================================================== */
 
 // With this function a new test user is created
@@ -35,7 +38,7 @@ async function createUserAndSetToken() {
 
 async function deleteUser() {
   try {
-    const response = await request
+    await request
       .delete(`/users/${userId}`)
       .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
   } catch (err: any) {
@@ -53,10 +56,20 @@ afterAll(async () => {
 
 describe('Testing products API', () => {
   it('GET /products --> gets the products index endpoint', async () => {
-    const response = await request.get('/products'); // Make API call
+    // const response = await request.get('/products'); // Make API call
+    // expect(response.status).toBe(200);
 
-    // Tests
-    expect(response.status).toBe(200);
+    // Tests (done directly on model level - in contrast to other tests)
+    const product: Product = {
+      name: 'HP laptop',
+      price: 800,
+      categoryId: 1,
+    };
+    await store.create(product);
+
+    const products = await store.index();
+
+    expect(products.length).toBeGreaterThan(0);
   });
 
   it('GET /products/:id (existing) --> should return the product with the given id', async () => {
@@ -65,7 +78,6 @@ describe('Testing products API', () => {
 
     // Tests
     expect(response.status).toBe(200);
-    expect(response.body).toBeDefined();
     expect(response.body.name).toBe('Test Product');
   });
 
@@ -94,7 +106,6 @@ describe('Testing products API', () => {
 
     // Tests
     expect(response.status).toBe(200);
-    expect(response.body).toBeDefined();
     expect(response.body.hasOwnProperty('id')).toBe(true);
   });
 

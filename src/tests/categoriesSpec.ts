@@ -65,7 +65,6 @@ describe('Testing categories API', () => {
 
     // Tests
     expect(response.status).toBe(200);
-    expect(response.body).toBeDefined();
     expect(response.body.name).toBe('Gardening');
   });
 
@@ -92,7 +91,6 @@ describe('Testing categories API', () => {
 
     // Tests
     expect(response.status).toBe(200);
-    expect(response.body).toBeDefined();
     expect(response.body.hasOwnProperty('id')).toBe(true);
   });
 
