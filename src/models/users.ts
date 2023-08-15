@@ -122,14 +122,14 @@ export class UserStore {
   // Authenticate user --> Return password_hash if authorized; else null
   async authenticate(login: string, password: string): Promise<User | null> {
     const conn = await Client.connect();
-    const sql = 'SELECT password_hash FROM users WHERE login=($1)';
+    const sql = 'SELECT * FROM users WHERE login=($1)';
 
     const result = await conn.query(sql, [login]);
 
     if (result.rows.length) {
       const user = result.rows[0];
 
-      if (bcrypt.compareSync(password + pepper, user.password_digest)) {
+      if (bcrypt.compareSync(password + pepper, user.password_hash)) {
         return user;
       }
     }

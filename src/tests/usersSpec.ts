@@ -1,7 +1,11 @@
 import supertest from 'supertest';
 import app from '../server';
 import { json } from 'body-parser';
+import { User, UserStore } from '../models/users';
+import jwt from 'jsonwebtoken';
+
 const request = supertest(app);
+const store = new UserStore();
 
 var token: string;
 var userId: number = 1;
@@ -16,7 +20,7 @@ Routes in handler:
   // app.post('/users/:id/products', addProduct); // verifyAuthToken
 ================================================================================== */
 
-describe('Testing user API', () => {
+describe('USERS\n------------\n\nTesting user handlers', () => {
   it('GET /users --> gets the users index endpoint', async () => {
     const response = await request.get('/users'); // Make API call
 
@@ -88,5 +92,67 @@ describe('Testing user API', () => {
       .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
     // Tests
     expect(response.status).toBe(401);
+  });
+});
+
+describe('Testing user models', () => {
+  it('create and index of users', async () => {
+    const user: User = {
+      // User to be created
+      login: 'test',
+      firstName: 'Test',
+      lastName: 'Test',
+      passwordHash: 'test123',
+    };
+    await store.create(user); // Create product in DB
+
+    const users = await store.index();
+
+    expect(users.length).toBeGreaterThan(0);
+  });
+
+  it('create and show of user', async () => {
+    const user: User = {
+      // User to be created
+      login: 'test',
+      firstName: 'Test',
+      lastName: 'Test',
+      passwordHash: 'test123',
+    };
+    const usr = await store.create(user); // Create product in DB
+
+    if (usr.id !== undefined) {
+      // if product was created, the id is returned
+      const u = await store.show(usr.id.toString()); // we call the show function to get the prod
+      expect(u.id).toBe(usr.id);
+    } else {
+      fail('User creation failed');
+    }
+  });
+
+  it('create and delete of users', async () => {
+    const user: User = {
+      // User to be created
+      login: 'testmodel',
+      firstName: 'Test',
+      lastName: 'Test',
+      passwordHash: 'test123',
+    };
+
+    const usr = await store.create(user); // Create user in DB
+    var token = jwt.sign({ user: usr }, process.env.TOKEN_SECRET as string); // generate token for created user
+    // console.log(`1a. usr created ${JSON.stringify(usr)}\n`);
+    // console.log(`1b. with token ${token}\n`);
+
+    const pwHashObj = await store.authenticate(user.login, user.passwordHash); // Authenticate created user
+    // console.log(`6. pwHashObj: ${JSON.stringify(pwHashObj)}`);
+
+    if (usr.id !== undefined) {
+      // if user was created, the id is returned
+      const u = await store.delete(usr.id.toString(), token); // we call the delete function to get the prod
+      expect(u.id).toBe(usr.id);
+    } else {
+      fail('Product creation failed');
+    }
   });
 });
