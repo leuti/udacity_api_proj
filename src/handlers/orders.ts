@@ -55,7 +55,7 @@ const destroy = async (_req: Request, res: Response) => {
 };
 
 const addProduct = async (_req: Request, res: Response) => {
-  const orderId: string = _req.params.orderId;
+  const orderId: string = _req.params.id;
   const productId: string = _req.body.productId;
   const quantity: number = parseInt(_req.body.quantity);
 

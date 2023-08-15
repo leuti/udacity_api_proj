@@ -15,6 +15,13 @@ export type Order = {
   status: string;
 };
 
+export type OrderProduct = {
+  id?: number;
+  quantity: number;
+  orderId: string;
+  productId: string;
+};
+
 export class OrderStore {
   async index(): Promise<Order[]> {
     try {
@@ -72,7 +79,7 @@ export class OrderStore {
     quantity: number,
     orderId: string,
     productId: string
-  ): Promise<Order> {
+  ): Promise<OrderProduct> {
     try {
       const conn = await Client.connect();
       const sql =

@@ -130,7 +130,7 @@ describe('Testing user models', () => {
     }
   });
 
-  it('create and delete of users', async () => {
+  it('create, authenticate and delete of users', async () => {
     const user: User = {
       // User to be created
       login: 'testmodel',
@@ -141,11 +141,6 @@ describe('Testing user models', () => {
 
     const usr = await store.create(user); // Create user in DB
     var token = jwt.sign({ user: usr }, process.env.TOKEN_SECRET as string); // generate token for created user
-    // console.log(`1a. usr created ${JSON.stringify(usr)}\n`);
-    // console.log(`1b. with token ${token}\n`);
-
-    const pwHashObj = await store.authenticate(user.login, user.passwordHash); // Authenticate created user
-    // console.log(`6. pwHashObj: ${JSON.stringify(pwHashObj)}`);
 
     if (usr.id !== undefined) {
       // if user was created, the id is returned

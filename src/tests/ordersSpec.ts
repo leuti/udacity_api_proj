@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import app from '../server';
-import { Order, OrderStore } from '../models/orders';
+import { Order, OrderProduct, OrderStore } from '../models/orders';
 
 const request = supertest(app);
 const store = new OrderStore();
@@ -127,7 +127,7 @@ describe(`ORDERS\n------------\n\nTesting orders handler`, () => {
     };
 
     const response = await request
-      .post(`/orders/${orderId}/products`)
+      .post(`/orders/1/products`)
       .set('Authorization', `Bearer ${token}`)
       .send(orderProductsData); // Make API call
 
@@ -135,8 +135,6 @@ describe(`ORDERS\n------------\n\nTesting orders handler`, () => {
     expect(response.status).toBe(200);
     expect(response.body.hasOwnProperty('product_id')).toBe(true);
   });
-
-  it('POST /orders/:id/products (notexisting) --> should add new order_products record', async () => {});
 });
 
 describe('Testing order model', () => {
@@ -165,6 +163,21 @@ describe('Testing order model', () => {
       // if order was created, the id is returned
       const o = await store.show(ord.id.toString()); // we call the show function to get the order
       expect(o.id).toBe(ord.id);
+    } else {
+      fail('Order creation failed');
+    }
+  });
+
+  it('addProduct', async () => {
+    const quantity = 123456789;
+    const orderId = '1';
+    const productId = '1';
+
+    const ordProd = await store.addProduct(quantity, orderId, productId); // Create order in DB
+
+    if (ordProd.id !== undefined) {
+      // if orderProduct was created, the id is returned
+      expect(quantity).toBe(ordProd.quantity);
     } else {
       fail('Order creation failed');
     }
