@@ -1,6 +1,9 @@
 import supertest from 'supertest';
 import app from '../server';
+import { Category, CategoryStore } from '../models/categories';
+
 const request = supertest(app);
+const store = new CategoryStore();
 
 var token: string;
 var userId: number;
@@ -35,7 +38,7 @@ async function createUserAndSetToken() {
 
 async function deleteUser() {
   try {
-    const response = await request
+    await request
       .delete(`/users/${userId}`)
       .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
   } catch (err: any) {
@@ -51,7 +54,7 @@ afterAll(async () => {
   await deleteUser();
 });
 
-describe('Testing categories API', () => {
+describe('CATEGORIES\n------------\n\nTesting categories handler', () => {
   it('GET /categories --> gets the categories index endpoint', async () => {
     const response = await request.get('/categories'); // Make API call
 
@@ -111,5 +114,50 @@ describe('Testing categories API', () => {
       .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
     // Tests
     expect(response.status).toBe(400);
+  });
+
+  describe('Testing category model', () => {
+    it('create and index of category', async () => {
+      // Category to be created
+      const category: Category = {
+        name: 'Test Category',
+      };
+
+      await store.create(category); // Create product in DB
+
+      const categories = await store.index();
+
+      expect(categories.length).toBeGreaterThan(0);
+    });
+  });
+
+  it('create and show of category', async () => {
+    const category: Category = {
+      name: 'Test Category',
+    };
+    const categ = await store.create(category); // Create product in DB
+
+    if (categ.id !== undefined) {
+      // if product was created, the id is returned
+      const c = await store.show(categ.id.toString()); // we call the show function to get the prod
+      expect(c.id).toBe(categ.id);
+    } else {
+      fail('Category creation failed');
+    }
+  });
+
+  it('create and delete of products', async () => {
+    const category: Category = {
+      name: 'Test Category',
+    };
+    const categ = await store.create(category); // Create product in DB
+
+    if (categ.id !== undefined) {
+      // if product was created, the id is returned
+      const c = await store.delete(categ.id.toString()); // we call the delete function to get the prod
+      expect(c.id).toBe(categ.id);
+    } else {
+      fail('Product creation failed');
+    }
   });
 });

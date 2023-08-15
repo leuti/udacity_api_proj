@@ -54,22 +54,10 @@ afterAll(async () => {
   await deleteUser();
 });
 
-describe('Testing products API', () => {
+describe('PRODUCTS\n------------\n\nTesting products handler', () => {
   it('GET /products --> gets the products index endpoint', async () => {
-    // const response = await request.get('/products'); // Make API call
-    // expect(response.status).toBe(200);
-
-    // Tests (done directly on model level - in contrast to other tests)
-    const product: Product = {
-      name: 'HP laptop',
-      price: 800,
-      categoryId: 1,
-    };
-    await store.create(product);
-
-    const products = await store.index();
-
-    expect(products.length).toBeGreaterThan(0);
+    const response = await request.get('/products'); // Make API call
+    expect(response.status).toBe(200);
   });
 
   it('GET /products/:id (existing) --> should return the product with the given id', async () => {
@@ -126,5 +114,57 @@ describe('Testing products API', () => {
       .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
     // Tests
     expect(response.status).toBe(400);
+  });
+});
+
+describe('Testing products model', () => {
+  it('create and index of products', async () => {
+    const product: Product = {
+      // Product to be created
+      name: 'HP laptop',
+      price: 800,
+      categoryId: 1,
+    };
+    await store.create(product); // Create product in DB
+
+    const products = await store.index();
+
+    expect(products.length).toBeGreaterThan(0);
+  });
+
+  it('create and show of products', async () => {
+    const product: Product = {
+      // Product to be created
+      name: 'HP laptop',
+      price: 800,
+      categoryId: 1,
+    };
+    const prod = await store.create(product); // Create product in DB
+
+    if (prod.id !== undefined) {
+      // if product was created, the id is returned
+      const p = await store.show(prod.id.toString()); // we call the show function to get the prod
+      expect(p.id).toBe(prod.id);
+    } else {
+      fail('Product creation failed');
+    }
+  });
+
+  it('create and delete of products', async () => {
+    const product: Product = {
+      // Product to be created/deleted
+      name: 'HP laptop',
+      price: 800,
+      categoryId: 1,
+    };
+    const prod = await store.create(product); // Create product in DB
+
+    if (prod.id !== undefined) {
+      // if product was created, the id is returned
+      const p = await store.delete(prod.id.toString()); // we call the delete function to get the prod
+      expect(p.id).toBe(prod.id);
+    } else {
+      fail('Product creation failed');
+    }
   });
 });

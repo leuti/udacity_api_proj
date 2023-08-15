@@ -1,12 +1,14 @@
 import supertest from 'supertest';
 import app from '../server';
+import { Order, OrderStore } from '../models/orders';
+
 const request = supertest(app);
+const store = new OrderStore();
 
 // Token of Test User
 var token: string;
 var userId: number;
 let orderId: string; // variable to hold the newly created orderId
-let orderProductsId: string; // variable to hold the newly created orderId
 
 /* ===============================================================================
 Routes in handler: 
@@ -37,7 +39,7 @@ async function createUserAndSetToken() {
 
 async function deleteUser() {
   try {
-    const response = await request
+    await request
       .delete(`/users/${userId}`)
       .set('Authorization', `Bearer ${token}`); // Pass the token in the headers
   } catch (err: any) {
@@ -53,7 +55,7 @@ afterAll(async () => {
   await deleteUser();
 });
 
-describe('Testing orders API', () => {
+describe(`ORDERS\n------------\n\nTesting orders handler`, () => {
   it('GET /orders --> gets the orders index endpoint', async () => {
     const response = await request.get('/orders'); // Make API call
 
@@ -129,12 +131,59 @@ describe('Testing orders API', () => {
       .set('Authorization', `Bearer ${token}`)
       .send(orderProductsData); // Make API call
 
-    orderProductsId = response.body.id; // generated orderProductsId
-
     // Tests
     expect(response.status).toBe(200);
     expect(response.body.hasOwnProperty('product_id')).toBe(true);
   });
 
   it('POST /orders/:id/products (notexisting) --> should add new order_products record', async () => {});
+});
+
+describe('Testing order model', () => {
+  it('create and index of order', async () => {
+    const order: Order = {
+      // Order to be created
+      userId: 1,
+      status: 'test',
+    };
+    await store.create(order); // Create order in DB
+
+    const orders = await store.index();
+
+    expect(orders.length).toBeGreaterThan(0);
+  });
+
+  it('create and show of order', async () => {
+    const order: Order = {
+      // Order to be created
+      userId: 1,
+      status: 'test',
+    };
+    const ord = await store.create(order); // Create order in DB
+
+    if (ord.id !== undefined) {
+      // if order was created, the id is returned
+      const o = await store.show(ord.id.toString()); // we call the show function to get the order
+      expect(o.id).toBe(ord.id);
+    } else {
+      fail('Order creation failed');
+    }
+  });
+
+  it('create and delete of orders', async () => {
+    const order: Order = {
+      // Order to be created
+      userId: 1,
+      status: 'test',
+    };
+    const ord = await store.create(order); // Create order in DB
+
+    if (ord.id !== undefined) {
+      // if order was created, the id is returned
+      const p = await store.delete(ord.id.toString()); // we call the delete function to get the order
+      expect(p.id).toBe(ord.id);
+    } else {
+      fail('Order creation failed');
+    }
+  });
 });
