@@ -84,7 +84,7 @@ export class UserStore {
       const conn = await Client.connect();
 
       // First select the password_hash for give user
-      const sql1 = 'SELECT password_hash FROM users WHERE id=($1)'; // instead of comparing the password_hash_digest I would just compare the user ID in the token.
+      const sql1 = 'SELECT password_hash FROM users WHERE id=($1)'; // Improvement: instead of comparing password_hash_digest I would just compare the user ID in the token
       const result_select = await conn.query(sql1, [id]);
 
       // Throw error if user with given id is not found
@@ -130,6 +130,7 @@ export class UserStore {
       const user = result.rows[0];
 
       if (bcrypt.compareSync(password + pepper, user.password_hash)) {
+        // check if provided password and pepper match password_hash stored in DB
         return user;
       }
     }
